@@ -24,8 +24,9 @@ module BootstrapForm
         label = options.delete(:label)
         label_class = hide_class if options.delete(:hide_label)
         help = options.delete(:help)
+        right = options.delete(:right)
 
-        form_group(name, label: { text: label, class: label_class }, help: help) do
+        form_group(name, label: { text: label, class: label_class }, help: help, right: right) do
           options[:class] = "form-control #{options[:class]}".rstrip
           args << options.except(:prepend, :append)
           input = super(name, *args)
@@ -66,7 +67,7 @@ module BootstrapForm
 
       html = capture(&block)
       html << generate_help(name, options[:help])
-      html = content_tag(:div, html, class: right_class) if horizontal?
+      html = content_tag(:div, html, class: options[:right] || right_class) if horizontal?
 
       content_tag(:div, options.except(:label, :help)) do
         "#{generate_label(name, options[:label])}#{html}".html_safe
